@@ -1,0 +1,11 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+firebase-service-account.json
+*firebase-adminsdk*.json
+*service-account*.json
+
+# Build / deps
+node_modules
+dist

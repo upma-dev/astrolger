@@ -1,0 +1,12 @@
+{
+  "name": "AstroVani",
+  "short_name": "AstroVani",
+  "start_url": "/user",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7ECE3",
+  "theme_color": "#B9542C",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
