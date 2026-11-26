@@ -1,4 +1,4 @@
-import { api } from './api.js';
+import { API_ORIGIN, api } from './api.js';
 
 /* Firebase push notifications for the web apps.
    enablePush(role) registers /push-sw.js, asks for notification permission (on the first tap if the
@@ -10,7 +10,7 @@ const PATH = { user: '/user', astrologer: '/astrologer', admin: '/admin' };
 const tokenKey = (role) => `astro_${role}_fcm`;
 
 let cfgPromise = null;
-const getConfig = () => (cfgPromise ||= fetch('/api/public/push-config').then((r) => r.json()).catch(() => ({ enabled: false })));
+const getConfig = () => (cfgPromise ||= fetch(`${API_ORIGIN}/api/public/push-config`).then((r) => r.json()).catch(() => ({ enabled: false })));
 
 export const pushSupported = () => typeof window !== 'undefined' && 'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window && window.isSecureContext;
 

@@ -1,5 +1,7 @@
 import { io } from 'socket.io-client';
 
+export const API_ORIGIN = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+
 const tokenKey = (role) => `astro_${role}_token`;
 export const getToken = (role) => { try { return localStorage.getItem(tokenKey(role)); } catch { return null; } };
 export const setToken = (role, t) => { try { t ? localStorage.setItem(tokenKey(role), t) : localStorage.removeItem(tokenKey(role)); } catch { /* storage unavailable */ } };
@@ -11,7 +13,7 @@ export class ApiError extends Error {
 const inFlightGets = new Map();
 
 async function sendFetch(role, path, qs, token, method, body) {
-  const res = await fetch(`/api${path}${qs}`, {
+  const res = await fetch(`${API_ORIGIN}/api${path}${qs}`, {
     method,
     headers: { 'Content-Type': 'application/json', ...(token && { Authorization: `Bearer ${token}` }) },
     body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -54,7 +56,7 @@ export const api = { public: make(null), user: make('user'), vendor: make('astro
 export const authApi = make(null);
 
 export function connectSocket(role) {
-  return io('/', { auth: { token: role ? getToken(role) : null }, transports: ['websocket', 'polling'] });
+  return io(API_ORIGIN || '/', { auth: { token: role ? getToken(role) : null }, transports: ['websocket', 'polling'] });
 }
 
 export const inr = (n = 0) => `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
