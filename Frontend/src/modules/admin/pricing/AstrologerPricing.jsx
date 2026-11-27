@@ -58,7 +58,6 @@ function RatesTable({ p }) {
         <input value={q} onChange={(ev) => setQ(ev.target.value)} placeholder="Search astrologer" className="w-52 rounded border border-gray-200 py-1.5 pl-8 pr-2 text-xs outline-none focus:border-indigo-500" />
       </div>
     }>
-      {!data ? <PageLoader /> : (
       {!data ? <PageLoader variant="table" /> : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] text-left text-xs">

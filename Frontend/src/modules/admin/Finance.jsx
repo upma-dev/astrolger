@@ -8,7 +8,6 @@ export function Transactions() {
   const { data, loading } = useAsync(() => api.admin.get('/admin/transactions', { ownerType }), [ownerType]);
   return (
     <Panel title="Transaction logs" action={<Select value={ownerType} onChange={(e) => setOwnerType(e.target.value)}><option value="">All</option><option value="user">User wallets</option><option value="astrologer">Astrologer wallets</option><option value="platform">Platform</option></Select>}>
-      {loading && !data ? <PageLoader /> : <Table rows={data} cols={[
       {loading && !data ? <PageLoader variant="table" /> : <Table rows={data} cols={[
         { h: 'Date', cell: (t) => fmtDate(t.createdAt) }, { h: 'Type', cell: (t) => <Badge tone="violet">{t.ownerType}</Badge> }, { h: 'Kind', cell: (t) => <span className="capitalize">{t.kind}</span> },
         { h: 'Note', cell: (t) => <span className="text-xs text-slate-500">{t.note}</span> },
@@ -27,7 +26,6 @@ export function Payouts() {
   };
   return (
     <Panel title="Payout requests">
-      {loading && !data ? <PageLoader /> : <Table rows={data} empty="No payout requests" cols={[
       {loading && !data ? <PageLoader variant="table" /> : <Table rows={data} empty="No payout requests" cols={[
         { h: 'Requested', cell: (w) => fmtDate(w.createdAt) },
         { h: 'Astrologer', cell: (w) => <div><p className="font-semibold text-slate-900">{w.astrologer?.name}</p><p className="text-xs text-slate-400">A/C {w.astrologer?.kyc?.bankAccount} · {w.astrologer?.kyc?.ifsc}</p></div> },
@@ -42,7 +40,6 @@ export function Commission() {
   const { data, loading } = useAsync(() => api.admin.get('/admin/commission'));
   return (
     <Panel title="Commission tracking">
-      {loading && !data ? <PageLoader /> : <Table rows={data} rowKey="_id" empty="No completed sessions yet" cols={[
       {loading && !data ? <PageLoader variant="table" /> : <Table rows={data} rowKey="_id" empty="No completed sessions yet" cols={[
         { h: 'Astrologer', cell: (r) => <b className="text-slate-900">{r.astrologer?.name || '—'}</b> }, { h: 'Rate', cell: (r) => `${r.astrologer?.commissionPct ?? '-'}%` },
         { h: 'Sessions', cell: (r) => r.sessions }, { h: 'Gross', cell: (r) => inr(r.gross) }, { h: 'Astrologer share', cell: (r) => inr(r.earned) },

@@ -94,11 +94,9 @@ function Shell() {
     return () => { cancelAnimationFrame(raf); el.removeEventListener('scroll', on); };
   }, [pathname, me]);
 
-  if (loading) return <Phone><PageLoader /></Phone>;
   if (loading) return <Phone bare><UserShellSkeleton /></Phone>;
   if (!me) return <Navigate to="/user/login" replace state={{ from: pathname }} />;
   // Sign-up must be finished first: no app screens until the details the admin made required are filled in.
-  if (appLoading && !data) return <Phone><PageLoader /></Phone>;
   if (appLoading && !data) return <Phone bare><UserShellSkeleton /></Phone>;
   if (missingSignup(me, data?.config?.signup?.customer?.fields).length) {
     // Just verified the OTP in this session → continue the sign-up steps. Otherwise start at number + OTP.
@@ -110,7 +108,6 @@ function Shell() {
       <PushListener role="user" />
       {!chat && <AnnouncementBar className="av-ann" cfg={data?.config?.announcement?.user} storageKey="ann-user" onNavigate={nav} />}
       {!chat && <Header me={me} collapsed={collapsed} />}
-      <Suspense fallback={<PageLoader />}>
       <Suspense fallback={<PageLoader variant={skVariant} />}>
         {legacy ? <div className="av-legacy"><Outlet /></div> : <Outlet />}
       </Suspense>
@@ -152,7 +149,6 @@ export default function UserApp() {
         <Gate>
         <Routes>
           <Route path="login" element={<LoginScreen />} />
-          <Route path="welcome" element={<Phone bare><Suspense fallback={<PageLoader />}><Welcome /></Suspense></Phone>} />
           <Route path="welcome" element={<Phone bare><Suspense fallback={<PageLoader variant="auth" />}><Welcome /></Suspense></Phone>} />
           <Route element={<Shell />}>
             <Route index element={<HomePage />} />

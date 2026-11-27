@@ -103,7 +103,6 @@ function ShellLayout() {
         </header>
         <main className="mx-auto w-full max-w-4xl flex-1 p-4 pb-24 lg:pb-6">
           <IncomingRequestBanner />
-          <Suspense fallback={<PageLoader />}><Outlet /></Suspense>
           <Suspense fallback={<PageLoader variant={skVariant} />}><Outlet /></Suspense>
         </main>
         <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 flex border-t border-slate-200 bg-white lg:hidden">
@@ -122,7 +121,6 @@ function ShellLayout() {
 
 function Shell() {
   const { me, loading } = vendorAuth.useAuth();
-  if (loading) return <PageLoader />;
   if (loading) return <VendorShellSkeleton />;
   if (!me) return <Navigate to="/vendor/login" replace />;
   return (

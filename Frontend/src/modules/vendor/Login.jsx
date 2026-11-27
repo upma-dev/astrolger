@@ -109,7 +109,6 @@ export default function Login() {
   useEffect(() => { if (resendIn <= 0) return undefined; const t = setTimeout(() => setResendIn((x) => x - 1), 1000); return () => clearTimeout(t); }, [resendIn]);
   useEffect(() => { if (chat && f.pricePerMin === '') setF((x) => ({ ...x, pricePerMin: cr(chat.defaultRate) })); }, [chat]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (loading) return <PageLoader />;
   if (loading) return <PageLoader variant="auth" />;
   if (me) return <Navigate to="/vendor" replace />;
 
