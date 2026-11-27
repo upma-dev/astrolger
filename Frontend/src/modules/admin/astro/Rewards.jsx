@@ -19,6 +19,7 @@ export default function Rewards() {
     <div className="space-y-5">
       <InfoGrid cols={3} items={[['Rewards given', rows.length], ['Total amount', inr(rows.reduce((s, r) => s + r.amount, 0))], ['Astrologers rewarded', new Set(rows.map((r) => String(r.owner))).size]]} />
       <Panel title="Rewards history" action={<Button size="sm" onClick={() => setF({ astrologer: astros?.[0]?._id || '', amount: '', note: '' })}><Gift size={14} /> Give reward</Button>}>
+        {loading && !data ? <PageLoader /> : <Table rows={rows} empty="No rewards yet" cols={[
         {loading && !data ? <PageLoader variant="table" /> : <Table rows={rows} empty="No rewards yet" cols={[
           { h: 'Date', cell: (r) => fmtDate(r.createdAt) },
           { h: 'Astrologer', cell: (r) => <Link to={`/admin/astro/view/${r.owner}`} className="font-semibold text-brand-700 hover:underline">{r.astrologer}</Link> },

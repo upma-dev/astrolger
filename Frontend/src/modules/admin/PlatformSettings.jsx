@@ -29,6 +29,7 @@ export default function PlatformSettings() {
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState('user');
   useEffect(() => { api.admin.get('/admin/system').then((x) => { setS(x); setSaved(x); }).catch((e) => toast(e.message, 'error')); }, [toast]);
+  if (!s) return <PageLoader />;
   if (!s) return <PageLoader variant="form" />;
   const dirty = JSON.stringify(s) !== JSON.stringify(saved);
   const setApp = (k, patch) => setS({ ...s, [k]: { ...s[k], ...patch } });

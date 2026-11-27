@@ -160,9 +160,9 @@ export default function Landing() {
       <header className={cx('fixed inset-x-0 top-0 z-50 transition-all duration-300', scrolled || open ? 'border-b border-lp-line bg-white/90 shadow-[0_6px_24px_-16px_rgba(122,54,32,.4)] backdrop-blur-xl' : 'bg-transparent')}>
         <AnnouncementBar cfg={app?.config?.announcement?.website} storageKey="ann-web" preview={!!app?.preview} />
         <nav className={cx('mx-auto flex max-w-7xl items-center justify-between px-4 transition-all sm:px-6 lg:px-8', scrolled ? 'h-16' : 'h-20')}>
-          <a href="#" className="flex items-center gap-2.5">
-            <img src={logo} className="h-9 w-9 rounded-xl object-contain" alt="" />
-            <span className={cx('text-[19px] font-bold tracking-tight transition-colors', scrolled || open ? 'text-lp-brand' : 'text-white')}>{brand.name}</span>
+          <a href="#" className="flex min-w-0 items-center gap-2.5">
+            <img src={logo} className="h-9 w-9 shrink-0 rounded-xl object-contain" alt="" />
+            <span className={cx('truncate text-[19px] font-bold tracking-tight transition-colors', scrolled || open ? 'text-lp-brand' : 'text-white')}>{brand.name}</span>
           </a>
           <div className={cx('hidden items-center gap-8 text-[14px] font-medium transition-colors lg:flex', scrolled ? 'text-lp-t2' : 'text-white/80')}>
             {links.map(([l, h]) => <a key={l} href={h} className={cx('transition', scrolled ? 'hover:text-lp-accent' : 'hover:text-white')}>{l}</a>)}
@@ -186,12 +186,9 @@ export default function Landing() {
                 {l}<ArrowRight size={16} className="text-lp-t3" />
               </a>
             ))}
-            <div className="mt-5 grid grid-cols-2 gap-2">
-              <PlayBadge href={userUrl} label="Google Play" className="justify-center" />
-              <a href={appStoreUrl} {...ext(appStoreUrl)} className="inline-flex items-center justify-center gap-3 rounded-2xl bg-lp-espresso px-4 py-2.5 text-white">
-                <AppleIcon className="h-6 w-6 shrink-0" />
-                <span className="text-left leading-tight"><span className="block text-[10px] font-medium uppercase tracking-wider text-white/60">Download on the</span><span className="block text-[14px] font-semibold">App Store</span></span>
-              </a>
+            <div className="mt-5 grid grid-cols-1 gap-2 min-[360px]:grid-cols-2">
+              <PlayBadge href={userUrl} label="Google Play" className="justify-center px-3" />
+              <AppStoreBadge href={appStoreUrl} className="justify-center px-3" />
             </div>
           </div>
         )}
@@ -204,15 +201,15 @@ export default function Landing() {
       <div style={bgOf("features")} className="relative z-10 -mt-14 rounded-t-[32px] bg-lp-bg shadow-[0_-24px_50px_-20px_rgba(0,0,0,.35)] sm:-mt-16 sm:rounded-t-[40px]">
         {/* stats tiles straddle the sheet edge */}
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className={cx('relative -top-9 grid gap-3 sm:gap-4', ['grid-cols-1', 'grid-cols-1', 'grid-cols-2', 'grid-cols-3', 'grid-cols-2 lg:grid-cols-4'][statItems.length])}>
+          <div className={cx('relative -top-9 grid gap-3 sm:gap-4', ['grid-cols-1', 'grid-cols-1', 'grid-cols-1 sm:grid-cols-2', 'grid-cols-1 sm:grid-cols-3', 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'][statItems.length] || 'grid-cols-1 sm:grid-cols-3')}>
             {statItems.map((s) => (
-              <div key={s.l} className="lp-card-shadow group relative flex items-center gap-3.5 overflow-hidden rounded-3xl border border-lp-line bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-lp-line2 sm:p-5">
+              <div key={s.l} className="lp-card-shadow group relative flex min-w-0 items-center gap-3.5 overflow-hidden rounded-3xl border border-lp-line bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-lp-line2 sm:p-5">
                 <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-lp-accent via-[#f6a275] to-lp-brand opacity-0 transition group-hover:opacity-100" aria-hidden="true" />
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-lp-accent to-lp-brand text-white shadow-[0_8px_18px_-8px_var(--lpa)] sm:h-12 sm:w-12"><s.I size={21} /></span>
                 <div className="min-w-0">
                   <p className="flex items-center gap-1.5 text-[1.35rem] font-extrabold leading-none text-lp-t1 sm:text-[1.65rem]">
                     {s.v}
-                    {s.live && <span className="relative ml-1 flex h-2.5 w-2.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative h-2.5 w-2.5 rounded-full bg-emerald-500" /></span>}
+                    {s.live && <span className="relative ml-1 flex h-2.5 w-2.5 shrink-0"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative h-2.5 w-2.5 rounded-full bg-emerald-500" /></span>}
                   </p>
                   <p className="mt-1.5 truncate text-[12.5px] text-lp-t2 sm:text-[13px]">{s.l}</p>
                 </div>
@@ -226,10 +223,10 @@ export default function Landing() {
           <section id="features" className="scroll-mt-24 pb-12 pt-0 lg:pb-16">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
               <SectionHead tag={L.featuresTag} title={L.featuresTitle} text={L.featuresSubtitle} />
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+              <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
                 {L.features.map((f, i) => (
                   <a key={f.title} href={userUrl} {...ext(userUrl)}
-                    className="lp-card-shadow group relative isolate flex flex-col overflow-hidden rounded-3xl border border-lp-line bg-white p-6 transition duration-300 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_24px_50px_-20px_var(--lpb)]">
+                    className="lp-card-shadow group relative isolate flex min-w-0 flex-col overflow-hidden rounded-3xl border border-lp-line bg-white p-5 transition duration-300 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_24px_50px_-20px_var(--lpb)] sm:p-6">
                     {/* hover fill in the hero gradient */}
                     <span className="lp-hero-bg absolute inset-0 -z-10 opacity-0 transition duration-300 group-hover:opacity-100" aria-hidden="true" />
                     <span className="pointer-events-none absolute right-5 top-4 text-[3.75rem] font-extrabold leading-none text-lp-soft transition duration-300 group-hover:text-white/10" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
@@ -254,10 +251,10 @@ export default function Landing() {
         <section id="how" style={bgOf("how")} className="scroll-mt-20 bg-white py-12 lg:py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <SectionHead tag={L.howTag} title={L.howTitle} text={L.howSubtitle} />
-            <ol className={cx('relative mt-10 grid gap-6 sm:grid-cols-2', L.steps.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3')}>
+            <ol className={cx('relative mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6', L.steps.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3')}>
               <div className="absolute left-[12%] right-[12%] top-[52px] hidden border-t-2 border-dashed border-lp-line2 lg:block" />
               {L.steps.map(({ title: st, text: d }, i) => (
-                <li key={st} className="relative rounded-3xl border border-lp-line bg-lp-soft2 px-6 pb-7 pt-6 text-center">
+                <li key={st} className="relative min-w-0 rounded-3xl border border-lp-line bg-lp-soft2 px-5 pb-6 pt-6 text-center sm:px-6 sm:pb-7">
                   <span className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-lp-accent text-[1.25rem] font-bold text-white shadow-[0_0_0_6px_var(--color-lp-soft2),0_10px_20px_-8px_var(--lpa)]">{i + 1}</span>
                   <h3 className="mt-5 text-[17px] font-semibold text-lp-t1">{st}</h3>
                   <p className="mt-2 text-[14.5px] leading-relaxed text-lp-t2">{d}</p>
@@ -280,17 +277,17 @@ export default function Landing() {
             <SectionHead tag={L.cta?.badge || 'Earn with us'} title={L.cta?.title || 'Are you an astrologer?'} text={L.cta?.text} />
             {L.cta?.earningsHighlight && (
               <div className="mt-6 flex justify-center">
-                <p className="inline-flex items-center gap-2.5 rounded-full border border-lp-line2 bg-white px-5 py-2.5 text-center text-[14px] font-semibold text-lp-brand lp-card-shadow">
+                <p className="inline-flex max-w-full items-center gap-2.5 rounded-2xl border border-lp-line2 bg-white px-4 py-2.5 text-center text-[13px] font-semibold text-lp-brand lp-card-shadow sm:rounded-full sm:px-5 sm:text-[14px]">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-lp-accent to-lp-brand text-white"><IndianRupee size={14} /></span>
-                  {L.cta.earningsHighlight}
+                  <span>{L.cta.earningsHighlight}</span>
                 </p>
               </div>
             )}
 
             {(L.cta?.perks || []).length > 0 && (
-              <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {L.cta.perks.map((p) => (
-                  <div key={p.title} className="lp-card-shadow rounded-3xl border border-lp-line bg-white p-5 transition duration-300 hover:-translate-y-1 hover:border-lp-line2">
+                  <div key={p.title} className="lp-card-shadow min-w-0 rounded-3xl border border-lp-line bg-white p-5 transition duration-300 hover:-translate-y-1 hover:border-lp-line2">
                     <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-lp-accent to-lp-brand text-white shadow-[0_10px_22px_-10px_var(--lpa)]"><AstroIcon n={p.icon || 'star'} s={21} /></span>
                     <h3 className="mt-4 text-[16px] font-semibold text-lp-t1">{p.title}</h3>
                     <p className="mt-1.5 text-[14px] leading-relaxed text-lp-t2">{p.text}</p>
@@ -300,7 +297,7 @@ export default function Landing() {
             )}
 
             {/* onboarding steps + app badge */}
-            <div className="lp-card-shadow mt-5 rounded-3xl border border-lp-line bg-white p-6 sm:p-7">
+            <div className="lp-card-shadow mt-5 rounded-3xl border border-lp-line bg-white p-5 sm:p-7">
               {(L.cta?.stepsTitle || L.cta?.freeLabel) && (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h3 className="text-[18px] font-bold text-lp-t1">{L.cta?.stepsTitle}</h3>
@@ -308,16 +305,16 @@ export default function Landing() {
                 </div>
               )}
               {(L.cta?.steps || []).length > 0 && (
-                <ol className={cx('mt-6 grid gap-5 md:gap-6', ['', 'md:grid-cols-1', 'md:grid-cols-2', 'md:grid-cols-3', 'md:grid-cols-2 lg:grid-cols-4'][L.cta.steps.length])}>
+                <ol className={cx('mt-6 grid grid-cols-1 gap-5 md:gap-6', ['md:grid-cols-1', 'md:grid-cols-1', 'md:grid-cols-2', 'md:grid-cols-3', 'md:grid-cols-2 lg:grid-cols-4'][L.cta.steps.length] || 'md:grid-cols-3')}>
                   {L.cta.steps.map((st, i) => {
                     const I = [Smartphone, FileCheck2, Zap, BadgeCheck][i] || Zap;
                     return (
-                      <li key={st.title} className="flex gap-3.5">
+                      <li key={st.title} className="flex min-w-0 gap-3.5">
                         <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-lp-soft text-lp-accent">
                           <I size={18} />
                           <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-lp-accent text-[10.5px] font-bold text-white ring-2 ring-white">{i + 1}</span>
                         </span>
-                        <div>
+                        <div className="min-w-0">
                           <p className="text-[15px] font-semibold text-lp-t1">{st.title}</p>
                           <p className="mt-0.5 text-[13.5px] leading-relaxed text-lp-t2">{st.text}</p>
                         </div>
@@ -326,9 +323,9 @@ export default function Landing() {
                   })}
                 </ol>
               )}
-              <div className="mt-6 flex flex-col items-start justify-between gap-4 border-t border-lp-line pt-5 sm:flex-row sm:items-center">
-                {L.cta?.footnote ? <p className="flex items-center gap-2.5 text-[13.5px] text-lp-t2"><ShieldCheck size={18} className="shrink-0 text-emerald-600" />{L.cta.footnote}</p> : <span />}
-                <PlayBadge href={vendorUrl} label="Astrologer App" />
+              <div className="mt-6 flex flex-col items-stretch justify-between gap-4 border-t border-lp-line pt-5 sm:flex-row sm:items-center">
+                {L.cta?.footnote ? <p className="flex items-center gap-2.5 text-[13.5px] text-lp-t2"><ShieldCheck size={18} className="shrink-0 text-emerald-600" /><span>{L.cta.footnote}</span></p> : <span />}
+                <PlayBadge href={vendorUrl} label="Astrologer App" className="w-full justify-center sm:w-auto" />
               </div>
             </div>
           </div>
@@ -338,33 +335,35 @@ export default function Landing() {
       {/* ================= FAQ ================= */}
       {sec.faq && L.faq.length > 0 && (
         <section id="faq" style={bgOf("faq")} className="scroll-mt-20 bg-white py-12 lg:py-16">
-          <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1.6fr] lg:gap-14 lg:px-8">
-            <div>
-              <SectionHead center={false} tag={L.faqTag} title={L.faqTitle} text={L.faqSubtitle} />
-              <div className="mt-8 space-y-3">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:gap-10 sm:px-6 lg:grid-cols-[1fr_1.6fr] lg:gap-14 lg:px-8">
+            <div className="min-w-0">
+              <SectionHead center={false} className="mx-auto text-center lg:mx-0 lg:text-left" tag={L.faqTag} title={L.faqTitle} text={L.faqSubtitle} />
+              <div className="mt-7 space-y-3 sm:mt-8">
                 {L.footer?.supportEmail && (
-                  <a href={`mailto:${L.footer.supportEmail}`} className="flex items-center gap-3 rounded-2xl border border-lp-line bg-lp-soft2 p-3.5 text-[14.5px] font-medium text-lp-t1 transition hover:border-lp-accent">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-lp-soft text-lp-accent"><Mail size={17} /></span>{L.footer.supportEmail}
+                  <a href={`mailto:${L.footer.supportEmail}`} className="flex min-w-0 items-center gap-3 rounded-2xl border border-lp-line bg-lp-soft2 p-3.5 text-[14.5px] font-medium text-lp-t1 transition hover:border-lp-accent">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-lp-soft text-lp-accent"><Mail size={17} /></span>
+                    <span className="min-w-0 truncate">{L.footer.supportEmail}</span>
                   </a>
                 )}
                 {L.footer?.supportPhone && (
-                  <a href={`tel:${L.footer.supportPhone.replace(/\s/g, '')}`} className="flex items-center gap-3 rounded-2xl border border-lp-line bg-lp-soft2 p-3.5 text-[14.5px] font-medium text-lp-t1 transition hover:border-lp-accent">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-lp-soft text-lp-accent"><Phone size={17} /></span>{L.footer.supportPhone}
+                  <a href={`tel:${L.footer.supportPhone.replace(/\s/g, '')}`} className="flex min-w-0 items-center gap-3 rounded-2xl border border-lp-line bg-lp-soft2 p-3.5 text-[14.5px] font-medium text-lp-t1 transition hover:border-lp-accent">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-lp-soft text-lp-accent"><Phone size={17} /></span>
+                    <span className="min-w-0 truncate">{L.footer.supportPhone}</span>
                   </a>
                 )}
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="min-w-0 space-y-3">
               {L.faq.map(({ q, a }, i) => {
                 const on = faq === i;
                 return (
                   <div key={q} className={cx('overflow-hidden rounded-2xl border transition', on ? 'border-lp-line2 bg-lp-soft2' : 'border-lp-line bg-white')}>
-                    <button onClick={() => setFaq(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-[15.5px] font-semibold text-lp-t1">
-                      {q}
+                    <button onClick={() => setFaq(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-[14.5px] font-semibold text-lp-t1 sm:gap-4 sm:px-5 sm:py-4 sm:text-[15.5px]">
+                      <span className="min-w-0 flex-1">{q}</span>
                       <span className={cx('flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition duration-300', on ? 'rotate-180 bg-lp-accent text-white' : 'bg-lp-soft text-lp-accent')}><ChevronDown size={16} /></span>
                     </button>
                     <div className={cx('grid transition-all duration-300', on ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}>
-                      <div className="overflow-hidden"><p className="px-5 pb-5 text-[14.5px] leading-relaxed text-lp-t2">{a}</p></div>
+                      <div className="overflow-hidden"><p className="px-4 pb-4 text-[14px] leading-relaxed text-lp-t2 sm:px-5 sm:pb-5 sm:text-[14.5px]">{a}</p></div>
                     </div>
                   </div>
                 );
@@ -378,16 +377,16 @@ export default function Landing() {
       {sec.final !== false && (
       <section style={bgOf("final")} className="py-12 lg:py-14">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="lp-card-shadow relative overflow-hidden rounded-[2.25rem] border border-lp-line2 bg-lp-soft px-6 py-10 text-center sm:px-12">
+          <div className="lp-card-shadow relative overflow-hidden rounded-[2.25rem] border border-lp-line2 bg-lp-soft px-5 py-9 text-center sm:px-12 sm:py-10">
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border-[28px] border-lp-accent/[.07]" />
             <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full border-[28px] border-lp-accent/[.07]" />
-            <h2 className="relative text-[1.9rem] font-bold leading-tight tracking-tight text-lp-t1 sm:text-[2.6rem]">
+            <h2 className="relative text-[1.65rem] font-bold leading-tight tracking-tight text-lp-t1 sm:text-[2.6rem]">
               {L.finalCta?.title}{L.finalCta?.highlight && <><br className="hidden sm:block" /> <span className="text-lp-accent">{L.finalCta.highlight}</span></>}
             </h2>
-            {L.finalCta?.text && <p className="relative mx-auto mt-4 max-w-lg text-[15.5px] leading-relaxed text-lp-t2">{L.finalCta.text}</p>}
-            <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <PlayBadge href={userUrl} label="Google Play" />
-              <AppStoreBadge href={appStoreUrl} />
+            {L.finalCta?.text && <p className="relative mx-auto mt-4 max-w-lg text-[14.5px] leading-relaxed text-lp-t2 sm:text-[15.5px]">{L.finalCta.text}</p>}
+            <div className="relative mt-7 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row">
+              <PlayBadge href={userUrl} label="Google Play" className="w-full max-w-[220px] justify-center sm:w-auto" />
+              <AppStoreBadge href={appStoreUrl} className="w-full max-w-[220px] justify-center sm:w-auto" />
             </div>
           </div>
         </div>

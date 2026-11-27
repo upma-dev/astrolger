@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { PageLoader } from './shared/ui.jsx';
 import { RouteSkeleton } from './shared/Skeleton.jsx';
 import Landing from './modules/landing/Landing.jsx';
 
@@ -10,6 +11,7 @@ const PolicyPage = lazy(() => import('./modules/landing/PolicyPage.jsx'));
 
 export default function App() {
   return (
+    <Suspense fallback={<PageLoader />}>
     <Suspense fallback={<RouteSkeleton />}>
       <Routes>
         <Route path="/" element={<Landing />} />

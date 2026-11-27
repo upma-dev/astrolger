@@ -68,6 +68,7 @@ export default function Support({ app = 'user' }) {
     try { replace({ ...(await api.admin.post(`/admin/tickets/${t._id}/status`, { status })), user: t.user, astrologer: t.astrologer }); } catch (err) { toast(err.message, 'error'); }
   };
 
+  if (loading && !data) return <PageLoader />;
   if (loading && !data) return <PageLoader variant="split" />;
   const label = app === 'astrologer' ? 'Astrologer' : 'Customer';
 

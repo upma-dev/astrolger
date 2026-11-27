@@ -17,6 +17,7 @@ export default function UserList() {
   };
   return (
     <Panel title={`Users (${rows.length})`} action={<div className="flex flex-wrap items-center gap-3"><Pills value={status} onChange={setStatus} options={[['all', 'All'], ['active', 'Active'], ['blocked', 'Blocked']]} /><SearchBox value={q} onChange={setQ} placeholder="Search name or phone" /></div>}>
+      {loading && !data ? <PageLoader /> : (
       {loading && !data ? <PageLoader variant="table" /> : (
         <Table rows={rows} empty="No users found" cols={[
           { h: 'User', cell: (u) => <Link to={`/admin/users/view/${u._id}`} className="flex items-center gap-3"><Avatar name={u.name || 'U'} size={34} /><div><p className="font-semibold text-slate-900 hover:text-brand-700">{u.name || '—'}</p><p className="text-xs text-slate-400">{u.phone || u.email}</p></div></Link> },

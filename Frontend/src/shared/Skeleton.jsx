@@ -475,18 +475,18 @@ export function LandingSkeleton({ themeVars }) {
             <div className="h-10 w-10 animate-pulse rounded-full bg-white/20" />
           </div>
         </div>
-        <div className="mx-auto mt-14 grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div className="space-y-5">
-            <div className="h-7 w-48 animate-pulse rounded-full bg-white/20" />
+        <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div className="min-w-0 space-y-5">
+            <div className="h-7 w-48 max-w-full animate-pulse rounded-full bg-white/20" />
             <div className="h-12 w-full max-w-md animate-pulse rounded-2xl bg-white/20" />
             <div className="h-12 w-4/5 animate-pulse rounded-2xl bg-white/15" />
             <div className="h-4 w-3/4 animate-pulse rounded-lg bg-white/15" />
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-wrap gap-3 pt-2">
               <div className="h-12 w-40 animate-pulse rounded-full bg-white/25" />
               <div className="h-12 w-36 animate-pulse rounded-full bg-white/15" />
             </div>
           </div>
-          <div className="mx-auto h-[420px] w-[240px] animate-pulse rounded-[36px] bg-white/15" />
+          <div className="mx-auto h-[330px] w-[200px] animate-pulse rounded-[36px] bg-white/15 sm:h-[420px] sm:w-[240px]" />
         </div>
       </div>
       <div className="relative z-10 -mt-12 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

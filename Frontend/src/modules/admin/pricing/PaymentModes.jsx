@@ -10,6 +10,7 @@ const METHODS = [['upi', 'UPI', Smartphone], ['card', 'Debit / credit card', Cre
 
 export default function PaymentModes() {
   const { p, dirty, busy, save, discard, setPart } = usePricing();
+  if (!p) return <PageLoader />;
   if (!p) return <PageLoader variant="form" />;
   const pm = p.payments;
   const set = (patch) => setPart('payments', patch);

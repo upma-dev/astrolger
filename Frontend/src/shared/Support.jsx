@@ -103,6 +103,7 @@ function MyQueries({ app, setTitle, setBack }) {
     try { const n = await client.post(`${base}/${open}/messages`, { text }); setList((l) => l.map((x) => (x._id === n._id ? n : x))); setText(''); } catch (x) { setErr(x.message); } finally { setBusy(false); }
   };
 
+  if (!list) return <div className="flex justify-center py-10"><Loader2 className="animate-spin text-[#B9542C]" /></div>;
   if (!list) return <SupportListSkeleton />;
 
   if (creating) return (

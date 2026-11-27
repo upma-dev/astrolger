@@ -47,6 +47,7 @@ export default function Store() {
       <div className="flex rounded-xl bg-slate-200/70 p-1 text-sm font-semibold">
         {['reports', 'remedies'].map((t) => <button key={t} onClick={() => setSp({ tab: t })} className={cx('flex-1 rounded-lg py-2 capitalize transition', tab === t ? 'bg-white text-brand-700 shadow' : 'text-slate-500')}>{t}</button>)}
       </div>
+      {loading ? <PageLoader /> : (
       {loading ? <PageLoader variant="store" /> : (
         <div className="space-y-3">
           {items?.map((it) => (

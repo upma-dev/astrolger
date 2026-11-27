@@ -6,9 +6,9 @@ import { BarChart, Panel, StatCard, Table } from '../kit.jsx';
 
 export default function UsersDashboard() {
   const nav = useNavigate();
-  const { data, loading, error } = useAsync(() => api.admin.get('/admin/users-overview'));
+  const { data, loading } = useAsync(() => api.admin.get('/admin/users-overview'));
+  if (loading && !data) return <PageLoader />;
   if (loading && !data) return <PageLoader variant="dashboard" />;
-  if (!data) return <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">{error?.message || 'Failed to load users overview.'}</div>;
   const t = data.totals;
   const maxZ = Math.max(1, ...data.zodiac.map((z) => z.n));
   return (

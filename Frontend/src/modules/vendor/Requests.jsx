@@ -14,6 +14,7 @@ export default function Requests() {
     if (version > 0) reloadPast(true);
   }, [version]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  if (loading) return <PageLoader />;
   if (loading) return <PageLoader variant="vendor-requests" />;
   return (
     <div className="space-y-5">

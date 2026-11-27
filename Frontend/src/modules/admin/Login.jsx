@@ -116,6 +116,7 @@ export default function Login() {
     ]).then(([status, stats]) => setMeta({ brand: status?.brand || null, stats }));
   }, []);
 
+  if (loading) return <PageLoader />;
   if (loading) return <PageLoader variant="auth" />;
   if (me) return <Navigate to="/admin" replace />;
 

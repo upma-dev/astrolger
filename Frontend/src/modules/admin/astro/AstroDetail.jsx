@@ -13,15 +13,14 @@ const Chips = ({ all, value, onChange }) => (
 export default function AstroDetail() {
   const { id } = useParams();
   const toast = useToast();
-  const { data, loading, error, reload } = useAsync(() => api.admin.get(`/admin/astrologers/${id}/detail`), [id]);
+  const { data, loading, reload } = useAsync(() => api.admin.get(`/admin/astrologers/${id}/detail`), [id]);
   const [tab, setTab] = useState('sessions');
   const [form, setForm] = useState(null);
   const [reward, setReward] = useState(null);
   const [chat, setChat] = useState(null);
   useEffect(() => { if (data) { const a = data.astrologer; setForm({ bio: a.bio || '', experience: a.experience, pricePerMin: a.pricePerMin, commissionPct: a.commissionPct, expertise: a.expertise || [], languages: a.languages || [] }); } }, [data]);
-  if (loading && !data) return <PageLoader variant="detail" />;
-  if (!data) return <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">{error?.message || 'Astrologer not found.'}</div>;
-  if (!form) return <PageLoader variant="detail" />;
+  if ((loading && !data) || !form) return <PageLoader />;
+  if ((loading && !data) || !form) return <PageLoader variant="detail" />;
   const { astrologer: a, stats: s } = data;
 
   const status = async (patch, msg) => { try { await api.admin.put(`/admin/astrologers/${a._id}`, patch); toast(msg, 'success'); reload(); } catch (e) { toast(e.message, 'error'); } };

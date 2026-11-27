@@ -153,6 +153,7 @@ export default function AstroAppSettings() {
   const tab = TABS[raw] ? raw : 'signup';
   const { cfg, setCfg, dirty, save, busy } = useAppConfig();
   const [view, setView] = useState('login');
+  if (!cfg) return <PageLoader />;
   if (!cfg) return <PageLoader variant="form" />;
 
   const a = cfg.signup?.astrologer || { title: '', subtitle: '', fields: {}, screen: {} };
@@ -181,6 +182,7 @@ export default function AstroAppSettings() {
                 {[['login', 'Login'], ['signup', 'Create account']].map(([k, l]) => <button key={k} type="button" onClick={() => setView(k)} className={cx('rounded-lg px-3 py-1.5', view === k ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600')}>{l}</button>)}
               </div>
             )}
+            {a.screen?.slides ? <Preview a={a} logo={logo} view={pv} /> : <PageLoader />}
             {a.screen?.slides ? <Preview a={a} logo={logo} view={pv} /> : <PageLoader variant="auth" />}
           </div>
         </div>

@@ -14,6 +14,7 @@ export default function UsersPage() {
   };
   return (
     <Panel title="Users" action={<div className="relative"><Search size={14} className="absolute left-3 top-2.5 text-slate-400" /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name / phone" className="rounded-xl border border-slate-200 py-2 pl-8 pr-3 text-sm outline-none focus:border-brand-500" /></div>}>
+      {loading && !data ? <PageLoader /> : (
       {loading && !data ? <PageLoader variant="table" /> : (
         <Table rows={data} cols={[
           { h: 'Name', cell: (u) => <div><p className="font-semibold text-slate-900">{u.name || '—'}</p><p className="text-xs text-slate-400">{u.phone || u.email}</p></div> },

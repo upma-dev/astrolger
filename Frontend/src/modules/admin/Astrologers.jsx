@@ -17,13 +17,14 @@ export default function Astrologers() {
   };
   const open = async (a) => {
     setSel(a); setCommission(a.commissionPct); setPerf(null);
-    try { setPerf(await api.admin.get(`/admin/astrologers/${a._id}/performance`)); } catch (e) { toast(e.message, 'error'); }
+    setPerf(await api.admin.get(`/admin/astrologers/${a._id}/performance`));
   };
 
   return (
     <>
       <Tabs value={status} onChange={setStatus} tabs={[['pending', 'Pending approval'], ['approved', 'Approved'], ['rejected', 'Rejected'], ['blocked', 'Blocked']]} />
       <Panel title={`${status[0].toUpperCase()}${status.slice(1)} astrologers`}>
+        {loading && !data ? <PageLoader /> : (
         {loading && !data ? <PageLoader variant="table" /> : (
           <Table rows={data} empty="Nothing here" cols={[
             { h: 'Astrologer', cell: (a) => <div className="flex items-center gap-3"><Avatar name={a.name} size={36} /><div><p className="font-semibold text-slate-900">{a.name}</p><p className="text-xs text-slate-400">{a.phone}</p></div></div> },

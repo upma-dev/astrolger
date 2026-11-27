@@ -32,6 +32,7 @@ export default function Dashboard() {
   const toggle = async () => {
     try { setMe(await api.vendor.post('/astrologer/online', { online: !me.online })); } catch (e) { toast(e.message, 'error'); }
   };
+  if (loading || !data) return <PageLoader />;
   if (loading || !data) return <PageLoader variant="vendor-dash" />;
   const approved = me.status === 'approved';
   const pendingCount = requests.length;

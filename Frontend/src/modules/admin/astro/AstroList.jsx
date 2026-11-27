@@ -24,6 +24,7 @@ export default function AstroList({ online = false }) {
   return (
     <Panel title={online ? `Online now (${data?.length ?? 0})` : `${TITLES[status] || 'Astrologers'} (${data?.length ?? 0})`}
       action={<div className="flex flex-wrap items-center gap-3"><Pills value={sort} onChange={setSort} options={[['recent', 'Newest'], ['rating', 'Top rated'], ['minutes', 'Most minutes'], ['price', 'Highest price']]} /><SearchBox value={q} onChange={setQ} placeholder="Name or phone" /></div>}>
+      {loading && !data ? <PageLoader /> : (
       {loading && !data ? <PageLoader variant="table" /> : (
         <Table rows={data} empty={online ? 'Nobody is online right now' : status === 'sponsored' ? 'No sponsored astrologers yet. Open an astrologer → Sponsor.' : 'Nothing here'} cols={[
           { h: 'Astrologer', cell: (a) => <Link to={`/admin/astro/view/${a._id}`} className="flex items-center gap-3"><Avatar name={a.name} src={a.avatar} size={38} /><div><p className="font-semibold text-slate-900 hover:text-brand-700">{a.name} {a.featured && <Badge tone="amber">featured</Badge>} {sponsorActive(a) && <Badge tone="violet">sponsored</Badge>}</p><p className="text-xs text-slate-400">{a.phone}{status === 'sponsored' && !online ? ` · ${sponsorActive(a) ? untilText(a) : 'expired'}` : ''}</p></div></Link> },

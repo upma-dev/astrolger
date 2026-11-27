@@ -11,6 +11,7 @@ export function TranscriptModal({ id, onClose }) {
   const s = data?.session;
   return (
     <Modal open={!!id} onClose={onClose} title="Consultation details" wide>
+      {loading || !s ? <PageLoader /> : (
       {loading || !s ? <PageLoader variant="chat" /> : (
         <div className="space-y-4">
           <InfoGrid cols={4} items={[['User', s.user?.name || s.user?.phone], ['Astrologer', s.astrologer?.name], ['Type', s.type], ['Status', s.status], ['Started', fmtDate(s.startedAt)], ['Ended', fmtDate(s.endedAt)], ['Minutes', s.minutes], ['Rate', `${inr(s.pricePerMin)}/min`], ['Amount', inr(s.amount)], ['Astrologer earned', inr(s.astrologerEarning)], ['Platform earned', inr(s.platformEarning)], ['Commission', `${s.commissionPct ?? '-'}%`]]} />
@@ -55,6 +56,7 @@ export default function Sessions({ scope = 'users', live = false }) {
     <div className="space-y-4">
       <InfoGrid cols={4} items={[['Consultations shown', rows.length], ['Minutes', rows.reduce((a, x) => a + (x.minutes || 0), 0)], ['Billed', inr(total)], ['Messages', rows.reduce((a, x) => a + (x.messageCount || 0), 0)]]} />
       <Panel title={live ? <span className="flex items-center gap-2"><span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />Live active sessions</span> : scope === 'astro' ? 'Chat history' : 'Consultations & chats'} action={<div className="flex flex-wrap items-center gap-3"><Pills value={status} onChange={setStatus} options={STATUS} /><Pills value={type} onChange={setType} options={TYPES} /><SearchBox value={q} onChange={setQ} placeholder="User or astrologer" /></div>}>
+        {loading && !data ? <PageLoader /> : (
         {loading && !data ? <PageLoader variant="table" /> : (
           <Table rows={rows} empty="No consultations match these filters" cols={[
             { h: 'Date', cell: (x) => fmtDate(x.createdAt) },

@@ -136,6 +136,7 @@ export default function ServicePricing() {
   const ctx = usePricing();
   const [edit, setEdit] = useState(null);
   const { p, dirty, busy, save, discard, setService } = ctx;
+  if (!p) return <PageLoader />;
   if (!p) return <PageLoader variant="table" />;
   if (edit) return <RuleForm k={edit} ctx={ctx} onBack={() => setEdit(null)} />;
   return (

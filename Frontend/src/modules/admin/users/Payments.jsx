@@ -16,6 +16,7 @@ export default function Payments() {
     <div className="space-y-4">
       <InfoGrid cols={3} items={[['Entries shown', rows.length], ['Money in', inr(credit)], ['Money out', inr(debit)]]} />
       <Panel title="User wallet transactions" action={<Pills value={kind} onChange={setKind} options={KINDS} />}>
+        {loading && !data ? <PageLoader /> : <Table rows={rows} empty="No transactions yet" cols={[
         {loading && !data ? <PageLoader variant="table" /> : <Table rows={rows} empty="No transactions yet" cols={[
           { h: 'Date', cell: (t) => fmtDate(t.createdAt) }, { h: 'Kind', cell: (t) => <span className="capitalize">{t.kind}</span> },
           { h: 'Note', cell: (t) => <span className="text-xs text-slate-500">{t.note}</span> }, { h: 'Reference', cell: (t) => <span className="font-mono text-[11px] text-slate-400">{t.ref || '—'}</span> },

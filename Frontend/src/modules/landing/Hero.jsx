@@ -60,8 +60,8 @@ export function AskBox({ prompts = [], topics = [], askLabel = 'Ask now', kundli
   const pick = (t) => { setTopic(t.label.toLowerCase()); if (t.q) setQ(t.q); inputRef.current?.focus(); };
 
   return (
-    <div>
-      <form onSubmit={submit} className="flex items-center gap-2 rounded-2xl bg-white p-2 pl-4 shadow-[0_18px_40px_-18px_rgba(0,0,0,.55)] ring-1 ring-black/5 focus-within:ring-4 focus-within:ring-white/30">
+    <div className="min-w-0">
+      <form onSubmit={submit} className="flex w-full items-center gap-1.5 rounded-2xl bg-white p-1.5 pl-3 shadow-[0_18px_40px_-18px_rgba(0,0,0,.55)] ring-1 ring-black/5 focus-within:ring-4 focus-within:ring-white/30 sm:gap-2 sm:p-2 sm:pl-4">
         <MessageCircle size={20} className="shrink-0 text-lp-accent" aria-hidden="true" />
         <label htmlFor="hero-ask" className="sr-only">Ask an astrologer a question</label>
         <input
@@ -69,14 +69,14 @@ export function AskBox({ prompts = [], topics = [], askLabel = 'Ask now', kundli
           onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
           placeholder={focused ? 'Type your question…' : typed || ' '}
           maxLength={200} autoComplete="off"
-          className="min-w-0 flex-1 bg-transparent py-2.5 text-[15px] text-lp-t1 outline-none placeholder:text-lp-t3"
+          className="min-w-0 flex-1 bg-transparent py-2.5 text-[14px] text-lp-t1 outline-none placeholder:text-lp-t3 sm:text-[15px]"
         />
-        <button type="submit" aria-label={askLabel} className="group inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-lp-accent px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-lp-accent-dk sm:px-5">
+        <button type="submit" aria-label={askLabel} className="group inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-lp-accent px-3.5 py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-lp-accent-dk sm:px-5 sm:py-3 sm:text-[14px]">
           {askLabel} <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
         </button>
       </form>
 
-      {topics.length > 0 && <div className="no-scrollbar -mx-4 mt-4 flex gap-1.5 overflow-x-auto px-4 sm:justify-center lg:mx-0 lg:justify-start lg:px-0" role="group" aria-label="Pick a topic">
+      {topics.length > 0 && <div className="no-scrollbar -mx-4 mt-4 flex gap-1.5 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0 lg:justify-start" role="group" aria-label="Pick a topic">
         {topics.map((t) => {
           const on = topic === t.label.toLowerCase();
           const I = TOPIC_ICONS[t.icon] || Orbit;
@@ -172,11 +172,11 @@ function StoreBadge({ href, store }) {
 export function AppPreview({ screenshot, appUrl, appStoreUrl, wheelHref }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative flex h-[380px] w-full items-center justify-center sm:h-[400px]">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,170,120,.45),transparent_65%)] blur-xl" aria-hidden="true" />
-        <ZodiacWheel href={wheelHref} className="absolute left-1/2 top-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 sm:h-[390px] sm:w-[390px]" />
-        <div className="relative z-10 w-[170px] rounded-[30px] bg-[#1a0f0b] p-[5px] shadow-[0_34px_70px_-24px_rgba(0,0,0,.75),inset_0_0_0_1.5px_rgba(255,255,255,.15)] sm:w-[180px]">
-          <div className="overflow-hidden rounded-[25px] bg-lp-bg">
+      <div className="relative flex h-[330px] w-full items-center justify-center sm:h-[400px]">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,170,120,.45),transparent_65%)] blur-xl sm:h-[260px] sm:w-[260px]" aria-hidden="true" />
+        <ZodiacWheel href={wheelHref} className="absolute left-1/2 top-1/2 h-[min(310px,84vw)] w-[min(310px,84vw)] -translate-x-1/2 -translate-y-1/2 sm:h-[390px] sm:w-[390px]" />
+        <div className="relative z-10 w-[154px] rounded-[28px] bg-[#1a0f0b] p-[5px] shadow-[0_34px_70px_-24px_rgba(0,0,0,.75),inset_0_0_0_1.5px_rgba(255,255,255,.15)] sm:w-[180px] sm:rounded-[30px]">
+          <div className="overflow-hidden rounded-[23px] bg-lp-bg sm:rounded-[25px]">
             <img src={screenshot} alt="App home screen" className="block w-full" loading="eager" />
           </div>
         </div>
@@ -213,21 +213,22 @@ export default function Hero({ hero = {}, stats, astrologers = [], appUrl = '/us
   ].filter(Boolean);
 
   return (
-    <section id="hero" aria-label="Ask an astrologer" className="lp-hero-bg relative overflow-hidden pb-32 pt-24 text-white">
+    <section id="hero" aria-label="Ask an astrologer" className="lp-hero-bg relative overflow-hidden pb-28 pt-24 text-white sm:pb-32">
       <div className="lp-stars pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
 
-      <div className={cx('relative mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:gap-6 lg:px-8', showPreview && 'lg:grid-cols-[58fr_42fr]')}>
+      <div className={cx('relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:gap-6 lg:px-8', showPreview && 'lg:grid-cols-[58fr_42fr]')}>
         {/* left */}
-        <div className="text-center lg:text-left">
+        <div className="min-w-0 text-center lg:text-left">
           {hero.badge && (
-            <span className="lp-rise inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[13px] font-medium">
-              <span className="h-2 w-2 rounded-full bg-emerald-300" aria-hidden="true" />{hero.badge}
+            <span className="lp-rise inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[12.5px] font-medium sm:text-[13px]">
+              <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-300" aria-hidden="true" />
+              <span className="truncate">{hero.badge}</span>
             </span>
           )}
-          <h1 key={hi % list.length} className="lp-rise mt-4 min-h-[2.24em] text-[1.9rem] font-extrabold leading-[1.12] tracking-[-0.02em] sm:text-[2.3rem] lg:text-[2.5rem] xl:text-[2.8rem]" style={{ animationDelay: '80ms' }}>
+          <h1 key={hi % list.length} className="lp-rise mt-4 min-h-[3.3em] text-[1.75rem] font-extrabold leading-[1.14] tracking-[-0.02em] sm:min-h-[2.24em] sm:text-[2.3rem] lg:text-[2.5rem] xl:text-[2.8rem]" style={{ animationDelay: '80ms' }}>
             {head.title}{head.highlight && <>{' '}<span className="text-[#f6b48f]">{head.highlight}</span></>}
           </h1>
-          {hero.subtitle && <p className="lp-rise mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/85 lg:mx-0" style={{ animationDelay: '160ms' }}>{hero.subtitle}</p>}
+          {hero.subtitle && <p className="lp-rise mx-auto mt-3 max-w-lg text-[14.5px] leading-relaxed text-white/85 sm:text-[15px] lg:mx-0" style={{ animationDelay: '160ms' }}>{hero.subtitle}</p>}
           <div className="lp-rise mx-auto mt-5 max-w-xl lg:mx-0" style={{ animationDelay: '240ms' }}>
             <AskBox prompts={hero.prompts} topics={hero.topics} askLabel={hero.primaryCta || 'Ask now'} kundliLabel={hero.secondaryCta} appUrl={appUrl} />
           </div>
@@ -235,7 +236,7 @@ export default function Hero({ hero = {}, stats, astrologers = [], appUrl = '/us
 
         {/* right: app preview on the rotating rashi wheel */}
         {showPreview && (
-          <div className="lp-rise" style={{ animationDelay: '320ms' }}>
+          <div className="lp-rise min-w-0" style={{ animationDelay: '320ms' }}>
             <AppPreview screenshot={hero.imageUrl || '/landing/app-home.webp'} appUrl={appUrl} appStoreUrl={appStoreUrl} wheelHref={appUrl} />
           </div>
         )}
@@ -244,21 +245,21 @@ export default function Hero({ hero = {}, stats, astrologers = [], appUrl = '/us
       {/* trust chips */}
       {chips.length > 0 && (
         <div className="relative mx-auto mt-8 max-w-6xl px-4 sm:px-6 lg:px-8">
-          <ul className="flex flex-wrap justify-center gap-3">
+          <ul className="flex flex-wrap justify-center gap-2.5 sm:gap-3">
             {chips.map((c, i) => (
-              <li key={c.k} className="lp-rise flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[.09] py-2.5 pl-2.5 pr-5 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/[.14]" style={{ animationDelay: `${400 + i * 60}ms` }}>
+              <li key={c.k} className="lp-rise flex max-w-full items-center gap-2.5 rounded-2xl border border-white/15 bg-white/[.09] py-2 pl-2.5 pr-4 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/[.14] sm:gap-3 sm:py-2.5 sm:pr-5" style={{ animationDelay: `${400 + i * 60}ms` }}>
                 {c.k === 'astro' ? (
-                  <span className="flex -space-x-2.5" aria-hidden="true">
+                  <span className="flex shrink-0 -space-x-2.5" aria-hidden="true">
                     {astrologers.slice(0, 3).map((a) => <span key={a._id} className="rounded-full ring-2 ring-white/70"><Avatar name={a.name} src={a.avatar} size={34} /></span>)}
                   </span>
                 ) : (
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#ffd2b5] to-[#f6a275] text-lp-brand" aria-hidden="true">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ffd2b5] to-[#f6a275] text-lp-brand" aria-hidden="true">
                     <c.I size={17} fill={c.k === 'rating' ? 'currentColor' : 'none'} strokeWidth={c.k === 'rating' ? 0 : 2} />
                   </span>
                 )}
-                <span className="text-left leading-tight">
-                  <span className="block text-[14px] font-semibold">{c.v}</span>
-                  {c.l && <span className="block text-[12px] text-white/70">{c.l}</span>}
+                <span className="min-w-0 text-left leading-tight">
+                  <span className="block text-[13.5px] font-semibold sm:text-[14px]">{c.v}</span>
+                  {c.l && <span className="block text-[11.5px] text-white/70 sm:text-[12px]">{c.l}</span>}
                 </span>
               </li>
             ))}

@@ -58,6 +58,7 @@ function RatesTable({ p }) {
         <input value={q} onChange={(ev) => setQ(ev.target.value)} placeholder="Search astrologer" className="w-52 rounded border border-gray-200 py-1.5 pl-8 pr-2 text-xs outline-none focus:border-indigo-500" />
       </div>
     }>
+      {!data ? <PageLoader /> : (
       {!data ? <PageLoader variant="table" /> : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] text-left text-xs">
@@ -144,6 +145,7 @@ export default function AstrologerPricing({ part = 'all' }) {
   const { p, dirty, busy, save, discard, setPart } = usePricing();
   const rulesLink = useRulesLink();
   const [withdraw, setWithdraw] = useState(1000);
+  if (!p) return <PageLoader />;
   if (!p) return <PageLoader variant="form" />;
   const tds = r2(withdraw * p.payout.tdsPct / 100), fee = r2(Math.min(p.payout.feeFlat, withdraw - tds));
   return (

@@ -127,6 +127,9 @@ export default function PolicyPage({ initialKey }) {
         {/* Policy Document Body */}
         <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-xs sm:p-10">
           {loading ? (
+            <div className="py-20 text-center">
+              <PageLoader />
+            </div>
             <PageLoader variant="policy" />
           ) : (
             <div className="space-y-6">
