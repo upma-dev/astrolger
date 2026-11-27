@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Check, Orbit, Sparkles, Star } from 'lucide-react';
 import { api, authApi, inr } from '../../lib/api.js';
+import { FALLBACK_PUBLIC_APP } from '../../lib/publicApp.js';
 import { userAuth } from '../../lib/auth.jsx';
 import { PageLoader, useAsync, useToast } from '../../shared/ui.jsx';
 import { Icon, useAV, useAppData, vibrate } from './av.jsx';
@@ -98,7 +99,8 @@ const Mandala = () => <Orbit size={620} strokeWidth={0.35} className="av-l4-mand
 export default function Login() {
   const { me, loading, login } = userAuth.useAuth();
   const { theme, setTheme } = useAV();
-  const { data: app, loading: appLoading } = useAppData();
+  const { data: appData } = useAppData();
+  const app = appData || FALLBACK_PUBLIC_APP;
   const { data: stats } = useAsync(() => api.public.get('/public/stats'));
   const nav = useNavigate();
   const loc = useLocation();
@@ -132,7 +134,7 @@ export default function Login() {
     return () => clearTimeout(t);
   }, [resendIn]);
 
-  if (loading || (appLoading && !app)) return <PageLoader variant="auth" />;
+  if (loading) return <PageLoader variant="auth" />;
   if (me) return <Navigate to={loc.state?.from || '/user'} replace />;
 
   const ready = phone.length === 10;

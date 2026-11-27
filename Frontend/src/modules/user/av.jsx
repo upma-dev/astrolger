@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 import { BadgeCheck } from 'lucide-react';
 import { AppDataCtx, AVCtx } from './avContext.js';
 import { api, inr } from '../../lib/api.js';
+import { FALLBACK_PUBLIC_APP, isValidPublicApp, readCachedApp, writeCachedApp } from '../../lib/publicApp.js';
 import { usePlatformLive } from '../../lib/live.js';
 import { userAuth } from '../../lib/auth.jsx';
 import { ToastCtx } from '../../shared/ui.jsx';
@@ -109,8 +110,21 @@ export function startCost(a, me, wallet = {}, type = 'chat', services) {
 /* ---------------- App data: everything the admin manages for the home screen ---------------- */
 export const useAppData = () => useContext(AppDataCtx);
 export function AppDataProvider({ children }) {
-  const [state, setState] = useState({ data: null, loading: true });
-  const reload = useCallback(() => api.public.get('/public/app').then((data) => setState({ data, loading: false })).catch(() => setState((s) => ({ ...s, loading: false }))), []);
+  const [state, setState] = useState(() => {
+    const cached = readCachedApp();
+    return { data: cached, loading: !cached };
+  });
+  const reload = useCallback(() => {
+    const timer = setTimeout(() => {
+      setState((s) => (s.data ? s : { data: FALLBACK_PUBLIC_APP, loading: false }));
+    }, 2500);
+    return api.public.get('/public/app').then((data) => {
+      if (!isValidPublicApp(data)) throw new Error('Invalid app config');
+      writeCachedApp(data);
+      setState({ data, loading: false });
+    }).catch(() => setState((s) => ({ data: s.data || FALLBACK_PUBLIC_APP, loading: false })))
+      .finally(() => clearTimeout(timer));
+  }, []);
   useEffect(() => { reload(); }, [reload]);
   // Admin saved something (theme, pricing, posters, on/off switch…): refresh without a page reload.
   usePlatformLive(reload);

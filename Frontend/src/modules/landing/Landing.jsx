@@ -8,6 +8,7 @@ import { FaFacebookF, FaInstagram, FaWhatsapp, FaXTwitter, FaYoutube } from 'rea
 import AstroIcon from '../../shared/AstroIcon.jsx';
 import Hero, { AppleIcon, GooglePlayIcon } from './Hero.jsx';
 import { api, inr } from '../../lib/api.js';
+import { FALLBACK_PUBLIC_APP, isValidPublicApp, readCachedApp, writeCachedApp } from '../../lib/publicApp.js';
 import { usePlatformLive } from '../../lib/live.js';
 import AnnouncementBar from '../../shared/AnnouncementBar.jsx';
 import Maintenance from '../../shared/Maintenance.jsx';
@@ -83,7 +84,7 @@ export default function Landing() {
   const [faq, setFaq] = useState(0);
   const [stats, setStats] = useState(null);
   const [allAstros, setAllAstros] = useState([]);
-  const [app, setApp] = useState(null);
+  const [app, setApp] = useState(() => readCachedApp());
   const [scrolled, setScrolled] = useState(false);
 
   // Admin live preview: /?preview=1 inside the Landing Editor iframe receives the unsaved config.
@@ -99,19 +100,32 @@ export default function Landing() {
   }, []);
 
   useEffect(() => {
-    api.public.get('/public/app').then((a) => setApp((cur) => (cur?.preview ? cur : a))).catch(() => { });
+    const fallbackTimer = setTimeout(() => {
+      setApp((cur) => cur || FALLBACK_PUBLIC_APP);
+    }, 2500);
+    api.public.get('/public/app').then((a) => {
+      if (!isValidPublicApp(a)) throw new Error('Invalid app config');
+      writeCachedApp(a);
+      setApp((cur) => (cur?.preview ? cur : a));
+    }).catch(() => {
+      setApp((cur) => cur || FALLBACK_PUBLIC_APP);
+    }).finally(() => clearTimeout(fallbackTimer));
     api.public.get('/public/stats').then(setStats).catch(() => { });
     api.public.get('/public/astrologers', { sort: 'rating' }).then(setAllAstros).catch(() => { });
     const onScroll = () => setScrolled(window.scrollY > 30);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => { clearTimeout(fallbackTimer); window.removeEventListener('scroll', onScroll); };
   }, []);
 
   // Admin saves (theme, texts, announcement, on/off) show up here without a refresh.
   usePlatformLive((what) => {
     if (what === 'astrologers') return;
-    api.public.get('/public/app').then((a) => setApp((cur) => (cur?.preview ? cur : a))).catch(() => { });
+    api.public.get('/public/app').then((a) => {
+      if (!isValidPublicApp(a)) return;
+      writeCachedApp(a);
+      setApp((cur) => (cur?.preview ? cur : a));
+    }).catch(() => { });
   });
 
   const L = app?.config?.landing;

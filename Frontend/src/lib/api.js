@@ -18,7 +18,14 @@ async function sendFetch(role, path, qs, token, method, body) {
     headers: { 'Content-Type': 'application/json', ...(token && { Authorization: `Bearer ${token}` }) },
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
-  const data = await res.json().catch(() => ({}));
+  const ct = res.headers.get('content-type') || '';
+  if (res.ok && ct && !ct.includes('application/json')) {
+    throw new ApiError('Unexpected non-JSON server response', 502);
+  }
+  const data = await res.json().catch(() => {
+    if (res.ok) throw new ApiError('Invalid JSON response from server', 502);
+    return {};
+  });
   if (!res.ok) {
     if (res.status === 401 && role) { setToken(role, null); window.dispatchEvent(new CustomEvent('astro:logout', { detail: role })); }
     // An app switched off by the admin: let the open screens show the maintenance page right away.
@@ -55,8 +62,10 @@ const make = (role) => ({
 export const api = { public: make(null), user: make('user'), vendor: make('astrologer'), admin: make('admin') };
 export const authApi = make(null);
 
+const SOCKET_ORIGIN = API_ORIGIN || (typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app') ? 'https://astrolger.onrender.com' : '/');
+
 export function connectSocket(role) {
-  return io(API_ORIGIN || '/', { auth: { token: role ? getToken(role) : null }, transports: ['websocket', 'polling'] });
+  return io(SOCKET_ORIGIN, { auth: { token: role ? getToken(role) : null }, transports: ['websocket', 'polling'] });
 }
 
 export const inr = (n = 0) => `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
